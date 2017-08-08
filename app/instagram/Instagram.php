@@ -9,22 +9,27 @@
  * Date: 8/3/17
  * Time: 7:10 PM
  */
+
+namespace App\instagram;
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+
 abstract class Instagram
 {
 
-    public $endPoint = 'https://api.instagram.com/v1/';
+    public $endPoint = 'https://instagram.com/';
     public $subUrl;
     public $header;
-    public $body;
+    public $body = [];
     public $requestMethod;
 
-    function __construct(array $jsonBody, $appendToSubUrl = null)
+    function __construct($username, $max_id = null)
     {
         $this->header = ['headers' => $this->handelHeader()];
-        $this->body = ['json' => $jsonBody];
-
-        if ($appendToSubUrl) {
-            $this->subUrl .= $appendToSubUrl;
+        $this->endPoint .= $username . "/media";
+        if ($max_id) {
+            $this->endPoint .= "/?max_id=" . $max_id;
         }
     }
 
@@ -40,6 +45,7 @@ abstract class Instagram
     {
         try {
             $client = new Client();
+            var_dump($this->endPoint . $this->subUrl);
             $request = $client->request($this->requestMethod, $this->endPoint . $this->subUrl, $this->options());
             if ($request->getStatusCode() >= 200 && $request->getStatusCode() < 300) {
                 $data = json_decode($request->getBody()->getContents());
