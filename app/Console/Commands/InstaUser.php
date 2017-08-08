@@ -9,6 +9,7 @@ class InstaUser extends Command
 {
 
     protected $items = [];
+    protected $page = 0;
     /**
      * The name and signature of the console command.
      *
@@ -47,7 +48,9 @@ class InstaUser extends Command
         foreach ($this->items as $item) {
             $urls[] = $this->getLinkFromItem($item);
         }
-        \Log::info($urls);
+
+
+
 
     }
 
@@ -60,6 +63,8 @@ class InstaUser extends Command
         }
 
         $request = $profile->request();
+        $this->page = $this->page + 1;
+        $this->comment('Get photos form page -> ' . $this->page);
         if ($request['code'] == 200 && count($request['data']['items']) != 0) {
             return $request['data'];
         }
@@ -72,7 +77,6 @@ class InstaUser extends Command
         $this->GetItemsFormPage($json);
         if ($json['more_available'] == true) {
             $newPage = $this->getProfile($user, end($this->items)['id']);
-            $this->info('new request with max id : ' . end($this->items)['id']);
             $this->fetchAllProfileData($newPage, $user);
         }
 

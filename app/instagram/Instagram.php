@@ -45,7 +45,6 @@ abstract class Instagram
     {
         try {
             $client = new Client();
-            var_dump($this->endPoint . $this->subUrl);
             $request = $client->request($this->requestMethod, $this->endPoint . $this->subUrl, $this->options());
             if ($request->getStatusCode() >= 200 && $request->getStatusCode() < 300) {
                 $data = json_decode($request->getBody()->getContents());
