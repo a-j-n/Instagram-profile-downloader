@@ -46,12 +46,19 @@ class InstaUser extends Command
         $profile = $this->getProfile($user);
         $this->fetchAllProfileData($profile, $user);
         foreach ($this->items as $item) {
-            $urls[] = $this->getLinkFromItem($item);
+            if ($item['type'] == 'image') {
+                $urls[] = $this->getLinkFromItem($item);
+            } elseif ($item['type'] == 'video') {
+                $urls[] = $item['videos']['standard_resolution']['url'];
+            }elseif($item['type'] = 'carousel'){
+                foreach ($item['carousel_media'] as $media ){
+                    $urls[] = $media['images']['standard_resolution']['url'];
+                }
+
+            }
         }
-
-
-
-
+        $pathToDownload = $this->CreateDirectoryForUser($user);
+        $this->DownloadUrls($urls, $pathToDownload);
     }
 
     private function getProfile($user, $max_id = null)
@@ -82,7 +89,6 @@ class InstaUser extends Command
 
     }
 
-
     private function GetItemsFormPage($json)
     {
         foreach ($json['items'] as $item) {
@@ -93,8 +99,48 @@ class InstaUser extends Command
 
     private function getLinkFromItem(array $array)
     {
+
         return $array['images']['standard_resolution']['url'];
+
+
     }
 
+    private function CreateDirectoryForUser($user)
+    {
+        $download_path = env('DOWNLOAD_PATH');
+        if (!$download_path) {
+            $this->info('you don\'t define download path on env file so it\'s will be in download folder  ' . base_path('download'));
+            $download_path = base_path('download');
+        }
+        if (!file_exists($download_path . "/" . $user)) {
+            mkdir($download_path . "/" . $user, 0777, true);
+        }
+        return $download_path . "/" . $user;
+    }
 
+    /**
+     * @param $urls
+     * @param $pathToDownload
+     */
+    private function DownloadUrls($urls, $pathToDownload)
+    {
+        $photosCount = count($urls) + 1;
+        $this->info("Downloading " . $photosCount . " photo ");
+        $countOfDownload = 0;
+        foreach ($urls as $url) {
+            $countOfDownload++;
+            $fileName = last(explode('/', $url));
+            if (!file_exists($pathToDownload . "/" . $fileName)) {
+                $this->comment(($countOfDownload + 1) . " Of " . $photosCount . "- download " . $fileName);
+                try {
+                    copy($url, $pathToDownload . "/" . $fileName);
+                } catch (\Exception $exception) {
+                    $this->error('can\'t download ' . $fileName);
+                    continue;
+                }
+            } else {
+                $this->info($fileName . " Already downloaded");
+            }
+        }
+    }
 }
