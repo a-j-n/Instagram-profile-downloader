@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\download;
+use App\Console\Commands\InstaProfile;
 use App\Console\Commands\InstaUser;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         download::class,
         InstaUser::class,
+        InstaProfile::class
     ];
 
     /**

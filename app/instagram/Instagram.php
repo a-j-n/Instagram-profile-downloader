@@ -53,7 +53,6 @@ abstract class Instagram
             }
             return ['data' => ['error', $request->getBody()->getContents()], 'code' => $request->getStatusCode()];
         } catch (ClientException $exception) {
-
             return [
                 'data' => ["error" => $exception->getResponse()],
                 'code' => $exception->getCode()

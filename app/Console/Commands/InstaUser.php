@@ -41,21 +41,15 @@ class InstaUser extends Command
      */
     public function handle()
     {
+        $this->comment('use instead ');
+        $this->info('php artisan insta:profile username');
+        die();
         $user = $this->argument('user');
         $this->info('Start Find Photos of ' . $user);
         $profile = $this->getProfile($user);
         $this->fetchAllProfileData($profile, $user);
         foreach ($this->items as $item) {
-            if ($item['type'] == 'image') {
-                $urls[] = $this->getLinkFromItem($item);
-            } elseif ($item['type'] == 'video') {
-                $urls[] = $item['videos']['standard_resolution']['url'];
-            }elseif($item['type'] = 'carousel'){
-                foreach ($item['carousel_media'] as $media ){
-                    $urls[] = $media['images']['standard_resolution']['url'];
-                }
-
-            }
+            $urls = $this->getLinkFromItem($item);
         }
         $pathToDownload = $this->CreateDirectoryForUser($user);
         $this->DownloadUrls($urls, $pathToDownload);
@@ -97,11 +91,19 @@ class InstaUser extends Command
 
     }
 
-    private function getLinkFromItem(array $array)
+    private function getLinkFromItem(array $item)
     {
 
-        return $array['images']['standard_resolution']['url'];
 
+        if ($item['type'] == 'image') {
+            $urls[] = $item['images']['standard_resolution']['url'];
+        } elseif ($item['type'] == 'video') {
+            $urls[] = $item['videos']['standard_resolution']['url'];
+        } elseif ($item['type'] = 'carousel') {
+            foreach ($item['carousel_media'] as $media) {
+                $urls[] = $media['images']['standard_resolution']['url'];
+            }
+        }
 
     }
 
