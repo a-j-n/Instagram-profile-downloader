@@ -122,7 +122,7 @@ class InstaProfile extends Command
     {
         $pathToDownload = $this->createDirectoryForUser();
         $photosCount = count($links);
-        $this->info("Downloading " . $photosCount . " photo ");
+        $this->info("Downloading " . $photosCount . " item ");
         $countOfDownload = 1;
         $this->output->progressStart($photosCount);
         foreach ($links as $url) {
