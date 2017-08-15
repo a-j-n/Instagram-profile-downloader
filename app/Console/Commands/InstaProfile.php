@@ -70,7 +70,7 @@ class InstaProfile extends Command
         $request = $profile->request();
 
         $this->page = $this->page + 1;
-        $this->comment('Get photos form page -> ' . $this->page);
+        $this->comment('Get items form page -> ' . $this->page);
         if ($request['code'] == 200 && count($request['data']['items']) != 0) {
             return $request['data'];
         }
