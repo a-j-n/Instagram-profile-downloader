@@ -19,11 +19,3 @@
         </div>
     </div>
 @endsection
-@push('js')
-    <script>
-        $('.send').click(function () {
-           var username = $('.username').val().trim();
-            window.location = "{{url('user/')}}"+"/"+username;
-        })
-    </script>
-@endpush

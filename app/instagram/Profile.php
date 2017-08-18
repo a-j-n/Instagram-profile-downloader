@@ -11,7 +11,7 @@
  */
 
 namespace App\instagram;
-class profile extends Instagram
+class Profile extends Instagram
 {
 
     public $requestMethod = 'get';

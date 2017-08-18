@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Blue') }}</title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -70,12 +70,22 @@
                 </div>
             </div>
         </nav>
+        @include('flash::message')
 
         @yield('content')
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script>
+        $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+        $('.send').click(function () {
+            $('')
+            var username = $('.username').val().trim();
+            window.location = "{{url('user/')}}"+"/"+username;
+        });
+
+    </script>
     @stack('js')
 </body>
 </html>
