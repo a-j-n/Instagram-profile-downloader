@@ -4,7 +4,7 @@
     @endif
 
     @if($item['type'] == 'carousel')
-       @include('instagram.componant.carousel',['item'=>$item['carousel_media']])
+       {{--@include('instagram.componant.carousel',['item'=>$item['carousel_media']])--}}
     @endif
 
     @if($item['type'] == 'video')

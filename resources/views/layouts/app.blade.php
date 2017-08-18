@@ -85,6 +85,13 @@
             window.location = "{{url('user/')}}"+"/"+username;
         });
 
+        $('.btn').on('click', function() {
+            var $this = $(this);
+            $this.button('loading');
+            setTimeout(function() {
+                $this.button('reset');
+            }, 80000);
+        });
     </script>
     @stack('js')
 </body>

@@ -10,7 +10,7 @@
 @push('js')
     <script>
         $('.download').click(function () {
-            var link = $(this).attr('link');
-            window.open("{{url('download')}}" + "/" + link, '_blank');
-        })</script>
+            $(this).parents('form').submit();
+        })
+    </script>
 @endpush

@@ -14,13 +14,14 @@ class InstagramController extends Controller
         if ($profile['code'] == 200) {
             return view('instagram.profile', compact('profile'));
         } else {
-            flash('Can\'t find user or private user','danger');
+            flash('Can\'t find user or private user', 'danger');
             return back();
         }
     }
 
-    public function download($url)
+    public function download()
     {
+        $url = \request()->url;
         $filename = basename($url);
         $download_path = base_path('/download/' . $filename);
         copy($url, $download_path);

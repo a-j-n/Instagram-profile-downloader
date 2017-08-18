@@ -16,4 +16,4 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('user/{username}', 'InstagramController@index');
-Route::get('download/{url}','InstagramController@download');
+Route::post('download','InstagramController@download');
