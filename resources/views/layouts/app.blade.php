@@ -73,6 +73,16 @@
         @include('flash::message')
 
         @yield('content')
+
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- insta-save -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:320px;height:100px"
+             data-ad-client="ca-pub-0864798110267937"
+             data-ad-slot="2640426009"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
 
     <!-- Scripts -->

@@ -12,7 +12,13 @@ class InstagramController extends Controller
         $profile = new Profile($username);
         $profile = $profile->request();
         if ($profile['code'] == 200 & isset($profile['data']['items']) ) {
-            return view('instagram.profile', compact('profile'));
+            if(count($profile['data']['items']) > 0){
+                return view('instagram.profile', compact('profile'));
+            }else{
+                flash('Can\'t find user or private user', 'danger');
+                return back();
+            }
+
         } else {
             flash('Can\'t find user or private user', 'danger');
             return back();
