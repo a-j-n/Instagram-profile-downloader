@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row">
             @include('instagram.componant.profile_page',['items'=>$profile['data']['items']])
+
         </div>
     </div>
 @endsection

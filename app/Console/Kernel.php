@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CheckUpdates;
 use App\Console\Commands\download;
 use App\Console\Commands\InstaProfile;
 use App\Console\Commands\InstaUser;
@@ -18,7 +19,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         download::class,
         InstaUser::class,
-        InstaProfile::class
+        InstaProfile::class,
+        CheckUpdates::class,
     ];
 
     /**

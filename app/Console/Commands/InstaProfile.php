@@ -25,6 +25,9 @@ class InstaProfile extends Command
     protected $items = [];
     protected $page = 0;
 
+    protected $downloadedFiles = 0;
+    protected $failsDownloadFiles = 0;
+
     /**
      * Create a new command instance.
      *
@@ -44,12 +47,15 @@ class InstaProfile extends Command
     {
 
         $this->user = $this->argument('user');
-
         $this->comment('Start Find Photos of ' . $this->user);
-
         $this->downloadPage();
 
         $this->comment('Oki i\'m done boss :)  ');
+
+        $this->info("Total Download : {$this->downloadedFiles} Files");
+        $this->info("Total Fails Download : {$this->failsDownloadFiles} Files ");
+
+
     }
 
     private function downloadPage($max_id = null)
@@ -57,11 +63,13 @@ class InstaProfile extends Command
         $profile = $this->getProfile($this->user, $max_id);
 
         $this->getItemsFormPage($profile);
-        $this->downloadItems();
-        if ($profile['more_available'] == true) {
-            $this->downloadPage(end($profile['items'])['id']);
-        }
 
+        if ($profile['items']) {
+            $this->downloadItems();
+            if ($profile['more_available'] == true) {
+                $this->downloadPage(end($profile['items'])['id']);
+            }
+        }
     }
 
     private function getProfile($user, $max_id = null)
@@ -75,7 +83,7 @@ class InstaProfile extends Command
             return $request['data'];
         }
         $this->info('it\'s private user or not founded');
-        die();
+        return ['items' => []];
 
     }
 
@@ -123,24 +131,8 @@ class InstaProfile extends Command
         $pathToDownload = $this->createDirectoryForUser();
         $photosCount = count($links);
         $this->info("Downloading " . $photosCount . " item ");
-        $countOfDownload = 1;
         $this->output->progressStart($photosCount);
-        foreach ($links as $url) {
-            $fileName = last(explode('/', $url));
-            if (!file_exists($pathToDownload . "/" . $fileName)) {
-                // $this->comment(($countOfDownload + 1) . " Of " . $photosCount . "- download " . $fileName);
-                try {
-                    copy($url, $pathToDownload . "/" . $fileName);
-                } catch (\Exception $exception) {
-                    $this->error('can\'t download ' . $fileName);
-                    continue;
-                }
-            } else {
-                $this->info($fileName . " Already downloaded");
-            }
-            $countOfDownload++;
-            $this->output->progressAdvance();
-        }
+        $this->DownloadFileToLocal($links, $pathToDownload);
         $this->output->progressFinish();
         $this->items = [];
     }
@@ -156,5 +148,31 @@ class InstaProfile extends Command
             mkdir($download_path . "/" . $this->user, 0777, true);
         }
         return $download_path . "/" . $this->user;
+    }
+
+    /**
+     * @param array $links
+     * @param $pathToDownload
+     * @param $countOfDownload
+     */
+    private function DownloadFileToLocal(array $links, $pathToDownload)
+    {
+        $countOfDownload = 1;
+        foreach ($links as $url) {
+            $fileName = last(explode('/', $url));
+            if (!file_exists($pathToDownload . "/" . $fileName)) {
+                try {
+                    copy($url, $pathToDownload . "/" . $fileName);
+                    $this->downloadedFiles++;
+                } catch (\Exception $exception) {
+                    $this->error('can\'t download ' . $fileName);
+                    unlink($pathToDownload . '/' . $fileName);
+                    $this->failsDownloadFiles++;
+                    continue;
+                }
+            }
+            $countOfDownload++;
+            $this->output->progressAdvance();
+        }
     }
 }
