@@ -15,5 +15,6 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('user/{username}', 'InstagramController@index');
+Route::get('user', 'InstagramController@index')->name('user-page');
+Route::get('instagram-user-pagination','InstagramController@pagination')->name('instagram-user-pagination');
 Route::post('download','InstagramController@download');

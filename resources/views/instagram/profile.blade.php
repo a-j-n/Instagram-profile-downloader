@@ -2,9 +2,12 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
+        <div id="data_loaded" class="row data_loaded">
             @include('instagram.componant.profile_page',['items'=>$profile['data']['items']])
 
+        </div>
+        <div class="row text-center">
+            @include('instagram.load_more')
         </div>
     </div>
 @endsection

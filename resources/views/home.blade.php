@@ -8,11 +8,13 @@
                     <div class="panel-heading">Find user</div>
 
                     <div class="panel-body">
-                        <div class="form-group">
-                            <input class="form-control username "  name="username"
-                                   placeholder="instagram user ex:_a_jamal">
-                        </div>
-                        <button class="btn send btn-success pull-right">Display profile</button>
+                        <form action="{{route('user-page')}}" method="get">
+                            <div class="form-group">
+                                <input class="form-control username " name="username"
+                                       placeholder="instagram username or profile url ex:_a_jamal ">
+                            </div>
+                            <button class="btn send btn-success pull-right">Display profile</button>
+                        </form>
                     </div>
                 </div>
             </div>
