@@ -5,6 +5,11 @@
 
 @push('js')
     <script>
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+                this.LoadMoreData();
+            }
+        });
         function LoadMoreData() {
             var loadMoreBtn = $("#load_more");
             loadMoreBtn.button('loading');
@@ -18,10 +23,11 @@
                             loadMoreBtn.button('reset');
                         });
                     } else {
-                        $("#load_more").html("No Data");
                         setTimeout(function () {
                             loadMoreBtn.button('reset');
                         }, 0);
+                       loadMoreBtn.attr('disabled','disabled')
+                        $('#remove-row').hide();
                     }
                 }
             });
