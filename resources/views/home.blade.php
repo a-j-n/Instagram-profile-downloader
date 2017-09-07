@@ -10,6 +10,7 @@
                     <div class="panel-body">
                         <form action="{{route('user-page')}}" method="get">
                             <div class="form-group">
+                                <label>Profile link or username</label>
                                 <input class="form-control username " name="username"
                                        placeholder="instagram username or profile url ex:_a_jamal ">
                             </div>
