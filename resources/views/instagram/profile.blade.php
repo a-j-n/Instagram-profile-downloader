@@ -11,10 +11,3 @@
         </div>
     </div>
 @endsection
-@push('js')
-    <script>
-        $('.download').click(function () {
-            $(this).parents('form').submit();
-        })
-    </script>
-@endpush
