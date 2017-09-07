@@ -55,7 +55,7 @@ class InstagramController extends Controller
     {
         $url = \request()->url;
         $filename = basename($url);
-        $download_path = base_path('/download/' . $filename);
+        $download_path = base_path('download/' . $filename);
         copy($url, $download_path);
         return response()->download($download_path)->deleteFileAfterSend(true);
     }
