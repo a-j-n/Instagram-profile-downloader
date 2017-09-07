@@ -8,7 +8,7 @@
     @endif
 
     @if($item['type'] == 'video')
-        @include('instagram.componant.video',['item'=>$item['images']])
+        @include('instagram.componant.video',['item'=>$item])
     @endif
     @if($loop->iteration == $loop->count)
         @php session(['last_id'=>$item['id']]) @endphp
