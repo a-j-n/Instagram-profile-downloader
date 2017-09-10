@@ -60,6 +60,3 @@ class InstagramController extends Controller
         return response()->download($download_path)->deleteFileAfterSend(true);
     }
 }
-/**
- * ["https:", "", "www.instagram.com" ,"shxyxy" , ""]
- */
