@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use \App\instagram\Profile;
+use Mockery\Exception;
 
 class InstaProfile extends Command
 {
@@ -166,7 +167,15 @@ class InstaProfile extends Command
                     $this->downloadedFiles++;
                 } catch (\Exception $exception) {
                     $this->error('can\'t download ' . $fileName);
-                    unlink($pathToDownload . '/' . $fileName);
+                    $this->warn($exception->getMessage());
+                    if (file_exists($pathToDownload . "/" . $fileName)) {
+                        try {
+                            unlink($pathToDownload . '/' . $fileName);
+                        } catch (Exception $UnlinkException) {
+                            $this->info($UnlinkException->getMessage());
+                        }
+                        continue;
+                    }
                     $this->failsDownloadFiles++;
                     continue;
                 }

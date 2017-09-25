@@ -45,6 +45,7 @@ class InstagramController extends Controller
 
     public function pagination()
     {
+
         $max_id = session('last_id');
         $profile_data = new Profile(session('username'), $max_id);
         $profile_data = $profile_data->request();

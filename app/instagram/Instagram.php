@@ -14,6 +14,7 @@ namespace App\instagram;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 
 abstract class Instagram
 {
@@ -52,11 +53,19 @@ abstract class Instagram
                 return ['data' => $data, 'code' => $request->getStatusCode()];
             }
             return ['data' => ['error', $request->getBody()->getContents()], 'code' => $request->getStatusCode()];
-        } catch (ClientException $exception) {
-            return [
-                'data' => ["error" => $exception->getResponse()],
-                'code' => $exception->getCode()
-            ];
+        } catch (\Exception $exception) {
+            if($exception instanceof ConnectException){
+                return [
+                    'data'=>[],
+                    'code'=>401
+                ];
+            }else{
+                return [
+                    'data' => ["error" => $exception->getResponse()],
+                    'code' => $exception->getCode()
+                ];
+            }
+
         }
 
     }
