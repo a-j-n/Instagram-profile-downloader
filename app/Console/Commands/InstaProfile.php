@@ -166,8 +166,8 @@ class InstaProfile extends Command
                     copy($url, $pathToDownload . "/" . $fileName);
                     $this->downloadedFiles++;
                 } catch (\Exception $exception) {
-                    $this->error('can\'t download ' . $fileName);
-                    $this->warn($exception->getMessage());
+                    $this->info('can\'t download ' . $fileName);
+                    $this->info($exception->getMessage());
                     if (file_exists($pathToDownload . "/" . $fileName)) {
                         try {
                             unlink($pathToDownload . '/' . $fileName);
