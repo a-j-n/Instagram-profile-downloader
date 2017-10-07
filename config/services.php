@@ -34,5 +34,10 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
+    'facebook' => [
+        'client_id' => env('facebook_client_id'),
+        'client_secret' => env('facebook_client_secret'),
+        'redirect' => 'http://LinkDownloader.dev/auth/facebook/callback',
+    ],
 
 ];

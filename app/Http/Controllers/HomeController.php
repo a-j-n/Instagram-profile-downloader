@@ -25,4 +25,15 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function facebookCallback()
+    {
+        $user = \Socialite::driver('facebook')->user();
+        dd($user);
+    }
+    public function redirectToFacebook()
+    {
+        return \Socialite::driver('facebook')->redirect();
+    }
 }
+

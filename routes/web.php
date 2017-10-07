@@ -13,7 +13,8 @@
 
 
 Auth::routes();
-
+Route::get('auth/facebook/callback','HomeController@facebookCallback');
+Route::get('auth/facebook','HomeController@redirectToFacebook');
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('user', 'InstagramController@index')->name('user-page');
 Route::get('instagram-user-pagination','InstagramController@pagination')->name('instagram-user-pagination');
