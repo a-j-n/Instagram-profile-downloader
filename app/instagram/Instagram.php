@@ -24,6 +24,7 @@ abstract class Instagram
     public $header;
     public $body = [];
     public $requestMethod;
+    public $cookie ;
 
     function __construct($username, $max_id = null)
     {
@@ -36,8 +37,13 @@ abstract class Instagram
 
     private function handelHeader()
     {
-        $headers = array_add($this->header, 'accept', 'application/json');
-        $headers = array_add($headers, 'token', env('DATA_ACCESS_LAYER_TOKEN'));
+        $cookie =  file_get_contents(base_path('cookie'));
+        if($cookie){
+           $headers = array_add($this->header,'Cookie',$cookie);
+           $headers = array_add($headers,'dnt',1);
+           $headers = array_add($headers ,'pragma','no-cache');
+        }
+
 
         return $headers;
     }
@@ -47,6 +53,7 @@ abstract class Instagram
         try {
             $client = new Client();
             $request = $client->request($this->requestMethod, $this->endPoint . $this->subUrl, $this->options());
+            //dd($this->options());
             if ($request->getStatusCode() >= 200 && $request->getStatusCode() < 300) {
                 $data = json_decode($request->getBody()->getContents());
                 $data = json_decode(json_encode($data), True);
@@ -56,7 +63,7 @@ abstract class Instagram
         } catch (\Exception $exception) {
             if($exception instanceof ConnectException){
                 return [
-                    'data'=>[],
+                    'data'=>['items'=>[],'more_available'=>true],
                     'code'=>401
                 ];
             }else{
@@ -75,8 +82,8 @@ abstract class Instagram
 
         return array_merge(
             $this->header,
-            $this->body,
-            ['http_errors' => false]
+            $this->body
+            //['http_errors' => false]
         );
     }
 

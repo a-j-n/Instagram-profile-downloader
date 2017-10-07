@@ -38,11 +38,14 @@ class CheckUpdates extends Command
      */
     public function handle()
     {
+        $x = 1;
         $folders = scandir(env('DOWNLOAD_PATH'));
         $folders = array_diff($folders, ['.', '..', '.DS_Store']);
-        $this->info("I'm checking " . count($folders) . " Folder");
+        $this->comment("I'm checking " . count($folders) . " Folder");
         foreach ($folders as $folder) {
+            $this->line('This folder number '.$x);
             \Artisan::call("insta:profile",['user'=>$folder],$this->output);
+            $x++;
         }
     }
 }

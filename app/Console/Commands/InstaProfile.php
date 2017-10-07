@@ -53,8 +53,8 @@ class InstaProfile extends Command
 
         $this->comment('Oki i\'m done boss :)  ');
 
-        $this->info("Total Download : {$this->downloadedFiles} Files");
-        $this->info("Total Fails Download : {$this->failsDownloadFiles} Files ");
+        $this->comment("Total Download : {$this->downloadedFiles} Files");
+        $this->comment("Total Fails Download : {$this->failsDownloadFiles} Files ");
 
 
     }
@@ -166,19 +166,21 @@ class InstaProfile extends Command
                     copy($url, $pathToDownload . "/" . $fileName);
                     $this->downloadedFiles++;
                 } catch (\Exception $exception) {
-                    $this->info('can\'t download ' . $fileName);
-                    $this->info($exception->getMessage());
+                    $this->comment('can\'t download ' . $fileName);
+                    $this->comment($exception->getMessage());
                     if (file_exists($pathToDownload . "/" . $fileName)) {
                         try {
                             unlink($pathToDownload . '/' . $fileName);
                         } catch (Exception $UnlinkException) {
-                            $this->info($UnlinkException->getMessage());
+                            $this->comment($UnlinkException->getMessage());
                         }
                         continue;
                     }
                     $this->failsDownloadFiles++;
                     continue;
                 }
+            }else{
+                break;
             }
             $countOfDownload++;
             $this->output->progressAdvance();
